@@ -36,6 +36,10 @@ provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor) 
 
+# Show this in the logs within the backend-flask (STDOUT)
+simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
+provider.add_span_processor(simple_processor) 
+
 # send reqs locally. Show within the backend flask app logs (STDOUT)
 # simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
 # provider.add_span_processor(simple_processor)
