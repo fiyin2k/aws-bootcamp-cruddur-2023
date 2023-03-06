@@ -9,6 +9,9 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
       OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
       # OTEL_EXPORTER_OTLP_HEADER: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+      AWS_ACCESS_KEY_ID: "AKIA2AVVTYQRU2NA7SOU"
+      AWS_SECRET_ACCESS_KEY: "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"
+      AWS_REGION: "us-east-1"
       AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
       AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
     build: ./backend-flask
