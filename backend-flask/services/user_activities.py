@@ -1,62 +1,36 @@
-import os
 from datetime import datetime, timedelta, timezone
-# XRAY SDK
-from aws_xray_sdk.core import xray_recorder
-from aws_xray_sdk.core import patch_all
-from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
-
+# from aws_xray_sdk.core import xray_recorder
 class UserActivities:
-  def __init__(self, request):
-        #self.xray_recorder = xray_recorder
-        self.request = request
-  def run(self, user_handle):
-    try:
-      parent_subsegment = xray_recorder.begin_subsegment('user_activities_start')
-      parent_subsegment.put_annotation('url', self.request.url)
-      # with xray_recorder.in_segment('home_activities') as segment:
-      model = {
-        'errors': None,
-        'data': None
-      }
-      now = datetime.now(timezone.utc).astimezone()
-      # XRAY --------------------------------------->
-      parent_subsegment.put_metadata('now', xray_dict, 'user_activities')
-      parent_subsegment.put_metadata('method', self.request.method, 'http')
-      parent_subsegment.put_metadata('url', self.request.url, 'http')
+  def run(user_handle):
+    # xray ---
+    #segment = xray_recorder.begin_segment('user_activities')
 
-      if user_handle == None or len(user_handle) < 1:
-        model['errors'] = ['blank_user_handle']
-      else:
-        try:
-          # create subsegment
-          subsegment = xray_recorder.begin_subsegment('user_activities_nested_subsegment')
-          now = datetime.now()
-          results = [{
-            'uuid': '248959df-3079-4947-b847-9e0892d1bab4',
-            'handle':  'Andrew Brown',
-            'message': 'Cloud is fun!',
-            'created_at': (now - timedelta(days=1)).isoformat(),
-            'expires_at': (now + timedelta(days=31)).isoformat()
-          }]
-          model['data'] = results
-          xray_dict['results'] = len(model['data'])
-          subsegment.put_metadata('results', xray_dict, 'user_activities')
-        except Exception as e:
-          # Raise the error in the segment
-          raise e
-        finally:  
-          xray_recorder.end_subsegment()
-    except Exception as e:
-      # Raise the error in the segment
-      raise e
-    finally:  
-      # Close the segment
-      xray_recorder.end_subsegment()
-      # xray -------------------->
-      # subsegment = xray_recorder.begin_subsegment(' ')
-      # dict ={
-      #   "now": now.isoformat(),
-      #   "results_size": len(model['data '])
-      # }
-      # subsegment.put_metadata('key', dict, 'namespace')
+    model = {
+      'errors': None,
+      'data': None
+    }
+
+    now = datetime.now(timezone.utc).astimezone()
+    
+    if user_handle == None or len(user_handle) < 1:
+      model['errors'] = ['blank_user_handle']
+    else:
+      now = datetime.now()
+      results = [{
+        'uuid': '248959df-3079-4947-b847-9e0892d1bab4',
+        'handle':  'Andrew Brown',
+        'message': 'Cloud is fun!',
+        'created_at': (now - timedelta(days=1)).isoformat(),
+        'expires_at': (now + timedelta(days=31)).isoformat()
+      }]
+      model['data'] = results
+
+    #subsegment = xray_recorder.begin_subsegment('mock-data')
+    # xray ---
+    #dict = {
+    #  "now": now.isoformat(),
+    #  "results-size": len(model['data'])
+    #}
+    #subsegment.put_metadata('key', dict, 'namespace')
+
     return model
